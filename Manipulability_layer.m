@@ -15,16 +15,15 @@ classdef Manipulability_layer
             obj.resolution = resolution;        %地图分辨率
             obj.edge_total = edges_total;       %地图总长
             obj.map = cell(2*resolution+1);     %地图由（2*resolution+1）^2个点构成，该地图为cell格式，cell中每个元素的值为一点的坐标（暂时是二维x，y）
-            edge = edge_total/(2*resolution);  
+            edge = edges_total/(2*resolution);  
             for i = 1:(2*resolution+1)
                 for j = 1:(2*resolution + 1)
                     obj.map{i,j} = [(resolution+1-i)*edge (-resolution-1+j)*edge];   %构建地图map，点的坐标为机器人base_coor下原点（target）的相对坐标[x y]
                 end
             end
-            obj.manipulability_map = zeros(2*resolution+1);                         %初始化可操作都图
         end
         
-        function obj = draw_map(obj, robot)                                         %绘制可操作度图
+        function obj = draw_map(obj, robot,params)                                         %绘制可操作度图
             %   draw_map（obj, robot) robot为机器人
             %   程序思路：
             %       遍历map中的每个点，将cell对应位置的值赋给pose中第四列12行
@@ -39,9 +38,9 @@ classdef Manipulability_layer
                     y = obj.map{i,j}(2);
                     pose(1,4)=x;
                     pose(2,4)=y;
-                    thetas = robot.ikine(pose);
-                    manipulability = robot.cal_manipulability(thetas);
-                    obj.manipulability_map((i-1)*(2*obj.resolution+1),:) = [x y manipulability];
+                    thetas =inverse_kinematics_puma560_simple(pose);
+                    manipulability = subs(cal_manipulability(robot,params),params,thetas);
+                    obj.manipulability_map((i-1)*(2*obj.resolution+1)+j,:) = [x,y,manipulability];
                 end
             end
             
