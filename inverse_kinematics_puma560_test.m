@@ -32,6 +32,8 @@ manipulability = cal_manipulability(manipulator,params)
 % final_state = subs(manipulator.T_forward,params, solution(4,:));
 % vpa(final_state,4)%6
 for i = 1:8
+    
     vpa(subs(manipulability,params,solution(i,:)),4)%4
+    
 end
 
