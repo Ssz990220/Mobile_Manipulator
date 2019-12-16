@@ -8,7 +8,7 @@ r23 = target_pose_T(2,3);
 r33 = target_pose_T(3,3);
 r31 = target_pose_T(3,1);
 r21 = target_pose_T(2,1);
-a2=40; a3 = 10; d3=15;d4 = 30;
+a2=40; a3 = 10; d3=10;d4 = 30;
 theta11=atan2(py,px)-atan2(d3,sqrt(px^2+py^2-d3^2));
 k = (px^2+py^2+pz^2-a2^2-a3^2-d3^2-d4^2)/(2*a2);
 theta31  = atan2(a3,d4)-atan2(k,sqrt(a3^2+d4^2-k^2));
